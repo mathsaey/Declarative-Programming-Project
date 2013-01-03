@@ -44,8 +44,8 @@ addPreferences(X, [Head|Tail],Ctr)			:- assert(priority(X,Head,Ctr)), NC is Ctr 
 convertArgList((Head,Rest), [Head|Tail]) :- convertArgList(Rest, Tail),!.
 convertArgList(Head, [Head]).
 
-%Takes a a>{b,c}>d string and converts it into a list
+%Takes a a>{b,c}>d string and converts it into a list ([a,[b,c],d])
 convertGTList({Head1,Head2} > Rest, [[Head1,Head2]|Tail]) 	:- convertGTList(Rest, Tail),!.
 convertGTList(Head > Rest, [Head|Tail]) 					:- convertGTList(Rest, Tail),!.
-convertGTList({X,Y},[[X,Y]])							 	:- !. 
+convertGTList({X,Y},[[X,Y]])								:- !. 
 convertGTList(X,[X]).
