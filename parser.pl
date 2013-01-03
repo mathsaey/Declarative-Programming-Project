@@ -2,11 +2,10 @@
 % Mathijs Saey
 % This file contains the parser and the file reader
 
-:- module(parser, [parseFile/1]).
 :-style_check(-discontiguous).
 
 % Redefine the > operator so that read accepts associative >
-:-op(1,xfy,>).
+:-op(600,xfy,>).
 
 % Opens the file and invokes the parser
 parseFile(FileName) :- 
