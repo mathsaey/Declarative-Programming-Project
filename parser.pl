@@ -2,7 +2,7 @@
 % Mathijs Saey
 % This file contains the parser and the file reader
 
-%:- module(parser, [parseFile/1]).
+:- module(parser, [parseFile/1]).
 :-style_check(-discontiguous).
 
 % Redefine the > operator so that read accepts associative >
@@ -21,7 +21,6 @@ parseFile(FileName) :-
 
 %Parses the different possible inputs until we reach end of file
 parse(end_of_file, _) 		:- !.
-
 parse(man = {L}, Stream) 	:- convertArgList(L,X), addMen(X), ! , read(Stream,Term), parse(Term,Stream).
 parse(women = {L}, Stream) 	:- convertArgList(L,X), addWomen(X), ! , read(Stream,Term), parse(Term,Stream).
 
@@ -50,5 +49,5 @@ convertArgList(Head, [Head]).
 %Takes a a>{b,c}>d string and converts it into a list
 convertGTList({Head1,Head2} > Rest, [[Head1,Head2]|Tail]) 	:- convertGTList(Rest, Tail),!.
 convertGTList(Head > Rest, [Head|Tail]) 					:- convertGTList(Rest, Tail),!.
-convertGTList({X,Y},[X,Y])								 	:- !. 
+convertGTList({X,Y},[[X,Y]])							 	:- !. 
 convertGTList(X,[X]).
