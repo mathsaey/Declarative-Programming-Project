@@ -1,7 +1,6 @@
 % parser.pl
 % Mathijs Saey
 % This file contains the parser and the file reader
-
 :-style_check(-discontiguous).
 
 % Redefine the > operator so that read accepts associative >
