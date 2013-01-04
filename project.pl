@@ -1,6 +1,6 @@
 :- include(parser).
 
-%male(X), female(X), priority(source, target, rating)
+%male(Men), female(X), priority(source, target, rating)
 
 % Nakijken of huwelijk stabiel is
 	% Man prefereert Y meer dan vrouw => als Y man prefeert boven man(Y) niet stabiel
@@ -11,12 +11,15 @@
 % Utility Clauses %
 %-----------------%
 
-% Check if a marriage is stable
-isStable(X,Y) :- 
-	(married(X,Y) ; married(Y,X)).
+% Add marriage
+insertMarriage(Male,Female,Marriages,[(Male,Female)|Marriages]).
 
+% Remove marriage
+removeMarriage(_,_,[],[]) :- !.
+removeMarriage(Male, Female, [(Male,Female)|Rest], Res) :- !, removeMarriage(Male, Female, Rest, Res).
+removeMarriage(Male, Female, [X|Tail], [X|ResTail]) 	:- removeMarriage(Male, Female, Tail, ResTail).
 
-
-% Add or remove marriages.
-insertMarriage(X, Y) :- assert(married(X,Y)), assert(married(Y,X)).
-removeMarriage(X, Y) :- retract(married(X,Y)), retract(married(Y,X)).
+% Check if a marriage exists.
+married(X,Y, [(X,Y)|_])		:- !.
+married(X,Y, [(Y,X)|_])		:- !.
+married(X,Y, [_|Marriages]) :- married(X,Y, Marriages).
