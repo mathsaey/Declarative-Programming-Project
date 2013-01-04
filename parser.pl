@@ -38,7 +38,7 @@ addPreferences(X, [Head|Tail],Ctr)			:- addRating(X,Head,Ctr), NC is Ctr + 1, ad
 
 % A given match is unacceptable if no rating has been given
 unAcceptable(X,Y) :- \+ (rating(X,Y,_)).
-addRating(X,Y,P) :- assert(rating(X,Y,P)).
+addRating(X,Y,P) :- assert((rating(X,Y,P) :- !)).
 
 %---------------%
 % Extra Clauses %

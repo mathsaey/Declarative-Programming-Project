@@ -1,6 +1,29 @@
 :- include(parser).
 
-%male(Men), female(X), rating(source, target, rating)
+% Ik wil zoveel mogelijk unieke huwelijken, met nieuwe partners, die stabiel zijn
+
+
+%----------------%
+% Naive Solution %
+%----------------%
+
+% A matching is stable when:
+stableMatching(Marriages) :- 
+	% You cannot find a man or women that is not married to add
+	(\+ (man(M), \+ married(M,_,Marriages));
+	\+ (women(W), \+ married(W,_,Marriages))), 
+	%And every marriage is stable
+	checkMarriages(Marriages), !.
+
+stableMatching(Marriages) :- 
+	% Get an unmarried man and women.
+	man(M), \+ married(M,_,Marriages),
+	women(W), \+ married(M,_,Marriages),
+
+	% Add their marriage
+	insertMarriage(M,W,Marriages,New),
+	% And continue looking
+	stableMatching(New).
 
 %-----------------%
 % Utility Clauses %
@@ -40,6 +63,7 @@ isStable(X,Y, Marriages) :-
 		RatingAB > RatingAX),!.
 
 % Add marriage
+insertMarriage(Male,Female,Marriages,Marriages) :- married(Male,Female,Marriages), !.
 insertMarriage(Male,Female,Marriages,[(Male,Female)|Marriages]).
 
 % Remove marriage
