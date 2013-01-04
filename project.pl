@@ -1,3 +1,8 @@
+% project.pl
+% Mathijs Saey
+% This file contains the stable-marriage algorithms
+:-style_check(-discontiguous).
+
 :- include(parser).
 
 %----------------%
@@ -28,9 +33,9 @@ stableMatchingLoop(Marriages, Res) :-
 	% any possible order
 	!.
 
-%-----------------%
-% Utility Clauses %
-%-----------------%
+%--------------------%
+% Stability Checking %
+%--------------------%
 
 % Check if all the marriages are stable.
 checkMarriages(Marriages) :- checkMarriagesLoop(Marriages,Marriages).
@@ -64,6 +69,10 @@ isStable(X,Y, Marriages) :-
 	% a lower rating means a higher interest
 	\+ (RatingXY > RatingXA, 
 		RatingAB > RatingAX),!.
+
+%---------------------%
+% Marriage Management %
+%---------------------%
 
 % Add marriage
 insertMarriage(Male,Female,Marriages,Marriages) :- married(Male,Female,Marriages), !.
