@@ -17,12 +17,12 @@ stableMatchingLoop(Marriages, Marriages) :-
 stableMatchingLoop(Marriages, Res) :- 
 	% Get an unmarried man and women.
 	man(M), \+ married(M,_,Marriages),
-	women(W), \+ married(M,_,Marriages),
+	women(W), \+ married(W,_,Marriages),
 
 	% Add their marriage
 	insertMarriage(M,W,Marriages,New),
 	% And continue looking
-	stableMatchingLoop(New,Res),!.
+	stableMatchingLoop(New,Res).
 
 %-----------------%
 % Utility Clauses %
