@@ -22,7 +22,11 @@ stableMatchingLoop(Marriages, Res) :-
 	% Add their marriage
 	insertMarriage(M,W,Marriages,New),
 	% And continue looking
-	stableMatchingLoop(New,Res).
+	stableMatchingLoop(New,Res),
+	% Remove this cut to only show one result 
+	% This includes every possible matching in 
+	% any possible order
+	!.
 
 %-----------------%
 % Utility Clauses %
