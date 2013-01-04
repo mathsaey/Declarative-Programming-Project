@@ -51,3 +51,17 @@ removeMarriage(Male, Female, [X|Tail], [X|ResTail]) 	:- removeMarriage(Male, Fem
 married(X,Y, [(X,Y)|_])		:- !.
 married(X,Y, [(Y,X)|_])		:- !.
 married(X,Y, [_|Marriages]) :- married(X,Y, Marriages).
+
+%--------%
+% Output %
+%--------%
+printMarriages(M) :- printMarriagesLoop(M,M).
+
+printMarriagesLoop([],_).
+printMarriagesLoop([(X,Y)|Tail], AllMarriages) :- 
+	checkMarriage(X,Y,AllMarriages), !,
+	write(X), write(' is happily married to: '), write(Y), nl,
+	printMarriagesLoop(Tail,AllMarriages).
+printMarriagesLoop([(X,Y)|Tail], AllMarriages) :- !,
+	write(X), write(' is in an unstable relation with: '), write(Y), nl,
+	printMarriagesLoop(Tail,AllMarriages).
