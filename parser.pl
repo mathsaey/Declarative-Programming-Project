@@ -33,8 +33,10 @@ addWomen([Head|Tail]) 	:- assert(women(Head)), addWomen(Tail),!.
 % Adds all the preferences to the database
 addPreferences(_,[],_).
 addPreferences(X, [[]|Tail],Ctr) 			:- NC is Ctr + 1, addPreferences(X,Tail, NC),!.
-addPreferences(X, [[Head|Tail]|Rest],Ctr) 	:- assert(priority(X,Head,Ctr)), addPreferences(X,[Tail|Rest],Ctr),!.
-addPreferences(X, [Head|Tail],Ctr)			:- assert(priority(X,Head,Ctr)), NC is Ctr + 1, addPreferences(X,Tail,NC),!.
+addPreferences(X, [[Head|Tail]|Rest],Ctr) 	:- addRating(X,Head,Ctr), addPreferences(X,[Tail|Rest],Ctr),!.
+addPreferences(X, [Head|Tail],Ctr)			:- addRating(X,Head,Ctr), NC is Ctr + 1, addPreferences(X,Tail,NC),!.
+
+addRating(X,Y,P) :- assert(rating(X,Y,P)).
 
 %---------------%
 % Extra Clauses %
