@@ -15,15 +15,15 @@ stableMatching(Marriages) :-
 	%And every marriage is stable
 	checkMarriages(Marriages), !.
 
-stableMatching(Marriages) :- 
-	% Get an unmarried man and women.
-	man(M), \+ married(M,_,Marriages),
-	women(W), \+ married(M,_,Marriages),
+%% stableMatching(Marriages) :- 
+%% 	% Get an unmarried man and women.
+%% 	man(M), \+ married(M,_,Marriages),
+%% 	women(W), \+ married(M,_,Marriages),
 
-	% Add their marriage
-	insertMarriage(M,W,Marriages,New),
-	% And continue looking
-	stableMatching(New).
+%% 	% Add their marriage
+%% 	insertMarriage(M,W,Marriages,New),
+%% 	% And continue looking
+%% 	stableMatching(New).
 
 %-----------------%
 % Utility Clauses %
