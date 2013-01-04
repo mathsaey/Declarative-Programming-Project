@@ -6,6 +6,18 @@
 % Utility Clauses %
 %-----------------%
 
+% Check if all the marriages are stable.
+checkMarriages(Marriages) :- checkMarriagesLoop(Marriages,Marriages).
+
+% Loops over the marriages.
+checkMarriagesLoop([],_).
+checkMarriagesLoop([(Male,Female)|Tail], AllMarriages) :- 
+	checkMarriage(Male,Female, AllMarriages), !,
+	checkMarriagesLoop(Tail, AllMarriages).
+
+% Checks if a given marriage is stable both ways.
+checkMarriage(Male, Female, Marriages) :- isStable(Male,Female,Marriages), isStable(Female,Male,Marriages).
+
 % Check if a marriage is stable, this check only works one way
 % e.g. if you pose the query isStable(male,female, ls) then this will only
 % check if the marriage is stable from the male point of view.
@@ -21,7 +33,6 @@ isStable(X,Y, Marriages) :-
 	%Get the priorities that matter for A
 	rating(A,X, RatingAX),
 	rating(A,B, RatingAB),
-	
 	% Check if both partners of the
 	% new pair would prefer each other
 	% a lower rating means a higher interest
