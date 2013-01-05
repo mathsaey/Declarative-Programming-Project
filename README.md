@@ -9,7 +9,7 @@ The full explanation of the project can be found at: https://ai.vub.ac.be/node/1
 * Preprocessing step: √
 * Own algorithm:
 	* Basic preference lists: √
-	* Tied preference lists: x
+	* Tied preference lists: √
 	* Incomplete preference lists: x
 	* Male-optimal, Female-optimal, minimum-regret, regret scores: x
 * Gale-Shapley algorithm: x
