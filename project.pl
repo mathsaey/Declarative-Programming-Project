@@ -5,6 +5,26 @@
 
 :- include(parser).
 
+%---------%
+% General %
+%---------%
+
+%Clause that calls the necessary parts of
+%the program.
+match(File,X) :- 
+	removeParseData,
+ 	parseFile(File),
+ 	stableMatching(X),
+ 	printMarriages(X).
+
+% Removes all the data from a parse
+% from the database
+removeParseData :- 
+	(retract(man(_));
+	 retract(women(_));
+	 retract(rating(_,_,_)));
+	true.
+
 %----------------%
 % Naive Solution %
 %----------------%
@@ -69,6 +89,9 @@ isStable(X,Y, Marriages) :-
 	% a lower rating means a higher interest
 	\+ (RatingXY > RatingXA, 
 		RatingAB > RatingAX),!.
+
+% Checks if there are ties present
+containsTies :- rating(X,Y1,P),rating(X,Y2,P), Y1 \= Y2,!.
 
 %---------------------%
 % Marriage Management %
