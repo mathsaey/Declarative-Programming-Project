@@ -1,10 +1,13 @@
 % project.pl
 % Mathijs Saey
-% This file contains the stable-marriage algorithms
+% This file contains the general code
+
 :-style_check(-discontiguous).
 
-:- include(parser).
-:- include(stabilityChecks).
+:- include(parser). % Contains the parser + file reader
+:- include(coupling). % Contains the code that manages marriages and mathces couples
+:- include(stabilityChecks). % Contains the code that checks if marriages are stable
+
 
 %---------%
 % General %
@@ -21,8 +24,8 @@ match(File) :-
 matchCont :- 
 	\+ containsTies,
  	stableMatching(X,isStableR),
- 	printMarriages(X,isStableR),
- 	write(X).
+ 	printMarriages(X,isStableR), nl,
+ 	write('Couples: '), write(X).
 
 % Continues for a situation with ties.
 matchCont :-
@@ -35,11 +38,11 @@ matchCont :-
 
 	% Print the types
 	write('Super stable: '), nl,
-	printMarriages(X,isSuperStableR),
+	printMarriages(X,isSuperStableR), nl,
 	write('Strong stable: '), nl,
-	printMarriages(Y,isStrongStableR),
+	printMarriages(Y,isStrongStableR), nl,
 	write('Weak stable: '), nl,
-	printMarriages(Z,isWeakStableR),
+	printMarriages(Z,isWeakStableR), nl,
 	write('Super stable list: '), write(X), nl,
 	write('Strong stable list: '), write(Y), nl,
 	write('Weak stable list: '), write(Z), nl.
@@ -53,52 +56,6 @@ removeParseData :-
 
 % Checks if there are ties present
 containsTies :- rating(X,Y1,P),rating(X,Y2,P), Y1 \= Y2,!.
-
-%--------------------%
-% Generating couples %
-%--------------------%
-
-stableMatching(X,StabilityCheck) :- stableMatchingLoop([],X, StabilityCheck).
-
-% A matching is stable when:
-stableMatchingLoop(Marriages, Marriages, StabilityCheck) :- 
-	% You cannot find a man or women that is not married to add
-	(\+ (man(M), \+ married(M,_,Marriages));
-	\+ (women(W), \+ married(W,_,Marriages))), 
-	%And every marriage is stable
-	checkMarriages(Marriages,StabilityCheck), !.
-
-stableMatchingLoop(Marriages, Res, StabilityCheck) :- 
-	% Get an unmarried man and women.
-	man(M), \+ married(M,_,Marriages),
-	women(W), \+ married(W,_,Marriages),
-
-	% Add their marriage
-	insertMarriage(M,W,Marriages,New),
-	% And continue looking
-	stableMatchingLoop(New,Res, StabilityCheck)
-	% Remove this cut to only show one result 
-	% This includes every possible matching in 
-	% any possible order
-	.
-
-%---------------------%
-% Marriage Management %
-%---------------------%
-
-% Add marriage
-insertMarriage(Male,Female,Marriages,Marriages) :- married(Male,Female,Marriages), !.
-insertMarriage(Male,Female,Marriages,[(Male,Female)|Marriages]).
-
-% Remove marriage
-removeMarriage(_,_,[],[]) :- !.
-removeMarriage(Male, Female, [(Male,Female)|Rest], Res) :- !, removeMarriage(Male, Female, Rest, Res).
-removeMarriage(Male, Female, [X|Tail], [X|ResTail]) 	:- removeMarriage(Male, Female, Tail, ResTail).
-
-% Check if a marriage exists.
-married(X,Y, [(X,Y)|_])		:- !.
-married(X,Y, [(Y,X)|_])		:- !.
-married(X,Y, [_|Marriages]) :- married(X,Y, Marriages).
 
 %--------%
 % Output %
