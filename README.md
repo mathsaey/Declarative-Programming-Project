@@ -4,6 +4,17 @@ This is the project for the Declarative Programming course at the VUB.
 The goal of this project is to write a program that can find stable matchings for a given *stable marriage problem.*
 The full explanation of the project can be found at: https://ai.vub.ac.be/node/1040
 
+#Status
+
+* Preprocessing step: √
+* Own algorithm:
+	* Basic preference lists: √
+	* Tied preference lists: x
+	* Incomplete preference lists: x
+	* Male-optimal, Female-optimal, minimum-regret, regret scores: x
+* Gale-Shapley algorithm: x
+* Result output: √
+
 #Assignment:
 
 
