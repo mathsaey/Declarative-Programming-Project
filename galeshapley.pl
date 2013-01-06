@@ -13,16 +13,16 @@ galeShapley(Pred,M) :-
 	Pred = man,
 	OfferPred = women,
 	createProposalList(man,P),
-	galeShapleyIter(OfferPred,[],P, M).
+	galeShapleyLoop(OfferPred,[],P, M).
 	
 galeShapley(Pred,M) :-
 	Pred = women,
 	OfferPred = man,
 	createProposalList(women,P),
-	galeShapleyIter(OfferPred,[],P, M).
+	galeShapleyLoop(OfferPred,[],P, M).
 
 
-galeShapleyIter(OfferPred,Marriages,Proposelist, Res) :-
+galeShapleyLoop(OfferPred,Marriages,Proposelist, Res) :-
 	% Make a new empty offerlist
 	createEmptyList(OfferPred,O),
 	proposePhase(Marriages,O,NewOffers,Proposelist,NewProposeList),
@@ -31,7 +31,7 @@ galeShapleyIter(OfferPred,Marriages,Proposelist, Res) :-
 	% We stop when no new offers are made, 
 	% this means that everybody is married
 	((O = NewOffers, Res = NewMarriages,!);
-	galeShapleyIter(OfferPred,NewMarriages,NewProposeList,Res),!).
+	galeShapleyLoop(OfferPred,NewMarriages,NewProposeList,Res),!).
 
 % Propose phase
 % -------------
