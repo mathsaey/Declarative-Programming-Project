@@ -24,13 +24,14 @@ stableMatching(Marriages, StabilityCheck) :-
 %---------------------%
 
 % Add marriage
-insertMarriage(Male,Female,Marriages,Marriages) :- married(Male,Female,Marriages), !.
-insertMarriage(Male,Female,Marriages,[(Male,Female)|Marriages]).
+insertMarriage(X,Y,Marriages,Marriages) :- married(X,Y,Marriages), !.
+insertMarriage(X,Y,Marriages,[(X,Y)|Marriages]).
 
 % Remove marriage
 removeMarriage(_,_,[],[]) :- !.
-removeMarriage(Male, Female, [(Male,Female)|Rest], Res) :- !, removeMarriage(Male, Female, Rest, Res).
-removeMarriage(Male, Female, [X|Tail], [X|ResTail]) 	:- removeMarriage(Male, Female, Tail, ResTail).
+removeMarriage(X, Y, [(X,Y)|Rest], Res) :- !, removeMarriage(X, Y, Rest, Res).
+removeMarriage(X, Y, [(Y,X)|Rest], Res) :- !, removeMarriage(X, Y, Rest, Res).
+removeMarriage(X, Y, [A|Tail], [A|ResTail]) 	:- removeMarriage(X, Y, Tail, ResTail).
 
 % Check if a marriage exists.
 married(X,Y, [(X,Y)|_])		:- !.
