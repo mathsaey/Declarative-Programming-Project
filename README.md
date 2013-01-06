@@ -10,7 +10,7 @@ The full explanation of the project can be found at: https://ai.vub.ac.be/node/1
 * Own algorithm:
 	* Basic preference lists: √
 	* Tied preference lists: √
-	* Incomplete preference lists: x
+	* Incomplete preference lists: √
 	* Male-optimal, Female-optimal, minimum-regret, regret scores: x
 * Gale-Shapley algorithm: x
 * Result output: √
@@ -74,13 +74,6 @@ alan: christine > tina > zoe > sarah.
 alan: christine > {tina, zoe} > ruth > sarah.
 
 Note that when ties in preference lists are present, there are three stability notations, namely super-stability, strong stability and weak-stability (Definitions in the Ref (Iwama and Miyazaki 2008)).
-
- 
-An extension of the SMP is the Student-Project Allocation Problem (SPA) in which students are assigned to projects based on his/her preferences over the projects. One lecturer may provide two or more projects, and each project has its own quota. Each lecturer also has
-
-his/her own quota, and preferences over the students. The preference lists are usually incomplete.
-
-The task is to find a stable matching that satisfies all quota-constraints both for projects and lectures.
 
 ##Functional Requirements
 Write a Prolog program that finds stable matchings for a given stable marriage problem. The preferences are given in a file written the above-mentioned format (some example files will be provided: 2pairs, 2pairs_incomplete_lists, 2pairs_with_ties, 5pairs).

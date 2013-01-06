@@ -26,10 +26,11 @@ checkMarriage(Male, Female, Marriages, StabilityCheck) :-
 isStable(X,Y, Marriages, StabilityCheck) :-
 	married(X,Y, Marriages),
 	% Get the rating of the pair
-	% test fails here if X deems Y unnaceptable
 	rating(X,Y, RatingXY),
 	% Look up other possible matches for X
-	rating(X,A, RatingXA), A \= Y,
+	% If there are no other matches (incomplete lists)
+	% then X's current partner will be checked, which always passes
+	rating(X,A, RatingXA),
 	% See who the match (A) is maried to
 	married(A,B, Marriages), 
 	%Get the priorities that matter for A

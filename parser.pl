@@ -36,8 +36,6 @@ addPreferences(X, [[]|Tail],Ctr) 			:- NC is Ctr + 1, addPreferences(X,Tail, NC)
 addPreferences(X, [[Head|Tail]|Rest],Ctr) 	:- addRating(X,Head,Ctr), addPreferences(X,[Tail|Rest],Ctr),!.
 addPreferences(X, [Head|Tail],Ctr)			:- addRating(X,Head,Ctr), NC is Ctr + 1, addPreferences(X,Tail,NC),!.
 
-% A given match is unacceptable if no rating has been given
-unAcceptable(X,Y) :- \+ (rating(X,Y,_)).
 addRating(X,Y,P) :- assert(rating(X,Y,P)).
 
 %---------------%

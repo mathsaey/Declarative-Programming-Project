@@ -12,9 +12,15 @@ stableMatching(X,StabilityCheck) :- stableMatchingLoop([],X, StabilityCheck).
 stableMatchingLoop(Marriages, Marriages, StabilityCheck) :- 
 	% You cannot find a man or women that is not married to add
 	(\+ (man(M), \+ married(M,_,Marriages));
-	\+ (women(W), \+ married(W,_,Marriages))), 
+	 \+ (women(W), \+ married(W,_,Marriages))), 
 	%And every marriage is stable
 	checkMarriages(Marriages,StabilityCheck), !.
+
+% An incomplete matching is stable when
+stableMatchingLoop(Marriages, Marriages, StabilityCheck) :- 
+	% The current matchings are stable
+	unAcceptable(_,_),
+	checkMarriages(Marriages,StabilityCheck).
 
 stableMatchingLoop(Marriages, Res, StabilityCheck) :- 
 	% Get an unmarried man and women.

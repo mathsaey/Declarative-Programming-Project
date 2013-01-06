@@ -8,7 +8,6 @@
 :- include(coupling). % Contains the code that manages marriages and mathces couples
 :- include(stabilityChecks). % Contains the code that checks if marriages are stable
 
-
 %---------%
 % General %
 %---------%
@@ -56,6 +55,8 @@ removeParseData :-
 
 % Checks if there are ties present
 containsTies :- rating(X,Y1,P),rating(X,Y2,P), Y1 \= Y2,!.
+% A given match is unacceptable if no rating has been given
+unAcceptable(X,Y) :- \+ rating(X,Y,_).
 
 %--------%
 % Output %
