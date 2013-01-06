@@ -58,9 +58,9 @@ matchGS(File) :-
  	galeShapley(man,M),
  	galeShapley(women,W),
 
- 	write('Male optimal solution: '), nl,
- 	printMarriages(M,isStableR), print(M), nl,
- 	write('Female optimal solution: '), nl,
+ 	write('Male optimal solution: '), nl, nl,
+ 	printMarriages(M,isStableR), print(M), nl, nl,
+ 	write('Female optimal solution: '), nl, nl,
  	printMarriages(W, isStableR), print(W).
 
 % Removes all the data from a parse

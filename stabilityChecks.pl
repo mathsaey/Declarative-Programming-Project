@@ -59,13 +59,14 @@ unAcceptable(X,Y) :- \+ (rating(X,Y,_)).
 isStableR(XY,AB,XA,AX) :- isWeakStableR(XY,AB,XA,AX).
 
 isWeakStableR(XY,AB,XA,AX) :-
-	\+ (XA > XY,
-		AX > AB).
+	\+ (XY > XA,
+		AB > AX).
+
 
 isStrongStableR(XY,AB,XA,AX) :-
-	\+ (XA > XY,
-		AX >= AB).
+	\+ (XY > XA,
+		AB >= AX).
 
 isSuperStableR(XY,AB,XA,AX) :-
-	\+ (XA >= XY,
-		AX >= AB).
+	\+ (XY >= XA,
+		AB >= AX).
