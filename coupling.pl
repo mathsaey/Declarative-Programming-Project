@@ -16,12 +16,6 @@ stableMatchingLoop(Marriages, Marriages, StabilityCheck) :-
 	%And every marriage is stable
 	checkMarriages(Marriages,StabilityCheck), !.
 
-% An incomplete matching is stable when
-stableMatchingLoop(Marriages, Marriages, StabilityCheck) :- 
-	% The current matchings are stable
-	unAcceptable(_,_),
-	checkMarriages(Marriages,StabilityCheck).
-
 stableMatchingLoop(Marriages, Res, StabilityCheck) :- 
 	% Get an unmarried man and women.
 	man(M), \+ married(M,_,Marriages),
@@ -35,7 +29,7 @@ stableMatchingLoop(Marriages, Res, StabilityCheck) :-
 	% This includes every possible matching in 
 	% any possible order
 	.
-
+	
 %---------------------%
 % Marriage Management %
 %---------------------%

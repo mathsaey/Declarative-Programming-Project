@@ -2,7 +2,6 @@
 % Mathijs Saey
 % This file contains clauses that determine if a marriage is stable
 
-
 % Check if all the marriages are stable.
 % the stability check determines which type of stable we test.
 checkMarriages(Marriages, StabilityCheck) :- 
