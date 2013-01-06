@@ -43,7 +43,6 @@ regretList([(X,Y)|Tail], [Regret|ResTail]) :-
 	max(P1,P2,Regret),
 	regretList(Tail,ResTail),!.
 
-
 %--------%
 % Output %
 %--------%

@@ -4,10 +4,11 @@
 
 :-style_check(-discontiguous).
 
-:- include(parser). % Contains the parser + file reader
-:- include(regret). % Contains the regret calculation and sorting
-:- include(coupling). % Contains the code that manages marriages and mathces couples
-:- include(stabilityChecks). % Contains the code that checks if marriages are stable
+:- include(parser). % Contains the parser + file reader.
+:- include(regret). % Contains the regret calculation and sorting.
+:- include(coupling). % Contains the code that manages marriages and mathces couples.
+:- include(galeshapley). % Contains the implementation of the gale-shapley algorithm.
+:- include(stabilityChecks). % Contains the code that checks if marriages are stable.
 
 %--------%
 % "Main" %
@@ -71,7 +72,6 @@ removeParseData :-
 
 % Checks if there are ties present
 containsTies :- rating(X,Y1,P),rating(X,Y2,P), Y1 \= Y2,!.
-
 
 %--------%
 % Output %
