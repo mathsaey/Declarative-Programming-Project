@@ -11,7 +11,7 @@ The full explanation of the project can be found at: https://ai.vub.ac.be/node/1
 	* Basic preference lists: √
 	* Tied preference lists: √
 	* Incomplete preference lists: √
-	* Male-optimal, Female-optimal, minimum-regret, regret scores: x
+	* Male-optimal, Female-optimal, minimum-regret, regret scores: √
 * Gale-Shapley algorithm: x
 * Result output: √
 

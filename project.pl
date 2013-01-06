@@ -5,6 +5,7 @@
 :-style_check(-discontiguous).
 
 :- include(parser). % Contains the parser + file reader
+:- include(regret). % Contains the regret calculation and sorting
 :- include(coupling). % Contains the code that manages marriages and mathces couples
 :- include(stabilityChecks). % Contains the code that checks if marriages are stable
 
@@ -24,7 +25,7 @@ matchCont :-
 	\+ containsTies,
  	stableMatching(X,isStableR),
  	printMarriages(X,isStableR), nl,
- 	write('Couples: '), write(X).
+ 	write('Couples: '), write(X), nl.
 
 % Continues for a situation with ties.
 matchCont :-
@@ -37,7 +38,7 @@ matchCont :-
 
 	write('Super stable list: '), write(X), nl,
 	write('Strong stable list: '), write(Y), nl,
-	write('Weak stable list: '), write(Z), nl,!.
+	write('Weak stable list: '), write(Z), nl,nl,!.
 
 super(X) :-
 	(stableMatching(X,isSuperStableR); true),
@@ -54,6 +55,12 @@ weak(X) :-
 	printMarriages(X,isWeakStableR),
 	true.
 
+% Does the same thing as match but
+% adds all marriages sorted by regret score afterwards
+matchRegret(File) :- 
+	match(File),
+	regretResults(isStableR,X),
+	printRegretList(X).
 
 % Removes all the data from a parse
 % from the database
@@ -62,33 +69,9 @@ removeParseData :-
 	retractall(women(_)),
 	retractall(rating(_,_,_)).
 
-%---------%
-% General %
-%---------%
-
 % Checks if there are ties present
 containsTies :- rating(X,Y1,P),rating(X,Y2,P), Y1 \= Y2,!.
 
-% Gets the maximum of 2 integers
-max(A,A,A).
-max(A,B,A) :- A > B,!.
-max(A,B,B) :- B > A,!.
-
-% Gets the maxium of a list
-maxList([M],M).
-maxList([Head|Tail], Max) :- 
-	maxList(Tail, M), 
-	(Head >= M, Max = Head;
-	 Head < M, Max = M),!.
-
-regretScore(Marriages,X) :- regretList(Marriages,R), maxList(R,X).
-
-regretList([],[]).
-regretList([(X,Y)|Tail], [Regret|ResTail]) :- 
-	rating(X,Y,P1),
-	rating(Y,X,P2),
-	max(P1,P2,Regret),
-	regretList(Tail,ResTail),!.
 
 %--------%
 % Output %
