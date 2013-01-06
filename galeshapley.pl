@@ -154,7 +154,3 @@ generateProposals(X,[Y|Tail],[(R,Y)|Res]) :-
 % Remove ratings from the list after sorting
 removeRatings([],[]).
 removeRatings([(_,X)|Tail], [X|ResTail]) :- removeRatings(Tail,ResTail).
-
-% Gets the first person that X has not proposed to yet.
-%% getMatch(X,[(X,Ls)|Tail], [(X,NewLs)|Tail], Y) :- removeProposal(Ls,NewLs,Y).
-%% getMatch(X,[Head|Tail], [Head|Tail], Y) :- getMatch(X,Tail,Tail,Y).

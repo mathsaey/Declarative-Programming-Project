@@ -14,6 +14,10 @@
 % "Main" %
 %--------%
 
+% match(File) 			=> Uses the naive algorithm to match any preference list.
+% matchGS(File) 		=> Uses the Gale-Shapley algorithm to match any non-tied, complete preference list.
+% matchWithRegret(File) => Uses the naive algorithm to match any preference list and adds the regret scores.
+
 %Clause that calls the necessary parts of
 %the program.
 match(File) :- 
@@ -41,6 +45,34 @@ matchCont :-
 	write('Strong stable list: '), write(Y), nl,
 	write('Weak stable list: '), write(Z), nl,nl,!.
 
+% Does the same thing as match but
+% adds all marriages sorted by regret score afterwards
+matchWithRegret(File) :- 
+	match(File),
+	regretResults(isStableR,X),
+	printRegretList(X).
+
+matchGS(File) :-
+	removeParseData,
+	parseFile(File),
+ 	galeShapley(man,M),
+ 	galeShapley(women,W),
+
+ 	write('Male optimal solution: '), nl,
+ 	printMarriages(M,isStableR), print(M), nl,
+ 	write('Female optimal solution: '), nl,
+ 	printMarriages(W, isStableR), print(W).
+
+% Removes all the data from a parse
+% from the database
+removeParseData :- 
+	retractall(man(_)),
+	retractall(women(_)),
+	retractall(rating(_,_,_)).
+
+% Checks if there are ties present
+containsTies :- rating(X,Y1,P),rating(X,Y2,P), Y1 \= Y2,!.
+	
 super(X) :-
 	(stableMatching(X,isSuperStableR); true),
 	printMarriages(X,isSuperStableR),
@@ -55,23 +87,6 @@ weak(X) :-
 	(stableMatching(X,isWeakStableR); true),
 	printMarriages(X,isWeakStableR),
 	true.
-
-% Does the same thing as match but
-% adds all marriages sorted by regret score afterwards
-matchRegret(File) :- 
-	match(File),
-	regretResults(isStableR,X),
-	printRegretList(X).
-
-% Removes all the data from a parse
-% from the database
-removeParseData :- 
-	retractall(man(_)),
-	retractall(women(_)),
-	retractall(rating(_,_,_)).
-
-% Checks if there are ties present
-containsTies :- rating(X,Y1,P),rating(X,Y2,P), Y1 \= Y2,!.
 
 %--------%
 % Output %
