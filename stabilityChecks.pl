@@ -2,6 +2,10 @@
 % Mathijs Saey
 % This file contains clauses that determine if a marriage is stable
 
+%-------------------%
+% Marriage stabilty %
+%-------------------%
+
 % Check if all the marriages are stable.
 % the stability check determines which type of stable we test.
 checkMarriages(Marriages, StabilityCheck) :- 
@@ -18,37 +22,41 @@ checkMarriage(Male, Female, Marriages, StabilityCheck) :-
 	isStable(Male,Female,Marriages,StabilityCheck), 
 	isStable(Female,Male,Marriages,StabilityCheck).
 
-% Check if a marriage is stable, this check only works one way
-% e.g. if you pose the query isStable(male,female, ls) then this will only
-% check if the marriage is stable from the male point of view.
-% The stability check is the kind of stability we need to test
-isStable(X,Y, Marriages, StabilityCheck) :-
+% Checks if a pair is stable
+isStable(X,Y,Marriages,StabilityCheck) :-
 	married(X,Y, Marriages),
-	% Get the rating of the pair
-	rating(X,Y, RatingXY),
-	% Look up other possible matches for X
-	% If there are no other matches (incomplete lists)
-	% then X's current partner will be checked, which always passes
-	rating(X,A, RatingXA),
-	% See who the match (A) is maried to
-	married(A,B, Marriages), 
-	%Get the priorities that matter for A
-	rating(A,X, RatingAX),
-	rating(A,B, RatingAB),
-	% Check if both partners of the
-	% new pair would prefer each other
-	% a lower rating means a higher interest
+	rating(X,Y, _),
+	(man(X),bagof(W,women(W),B);
+	 women(X),bagof(M,man(M),B)),
+	checkPair(X,Y,B,Marriages,StabilityCheck),!.
+
+% Checks pairs sees if there is a blocking pair for X.
+checkPair(_,_,[],_,_).
+checkPair(X,Y,[Head|Tail],Marriages, StabilityCheck) :- 
+	married(Head,A,Marriages),
+	checkPairs(X,Y,Head,A,StabilityCheck),
+	checkPair(X,Y,Tail,Marriages,StabilityCheck),!.
+
+% Checkpairs returns true if X,A is not a blocking pair.
+checkPairs(X,_,A,_,_) :- X = A,!.
+checkPairs(X,_,A,_,_) :- unAcceptable(X,A); unAcceptable(A,X),!.
+checkPairs(X,Y,A,B,StabilityCheck) :- 
+	rating(X,Y, RatingXY), rating(X,A, RatingXA),
+	rating(A,X, RatingAX), rating(A,B, RatingAB),
 	call(StabilityCheck, RatingXY, RatingAB, RatingXA, RatingAX),!.
 
-isStableR(XY,AB,XA,AX) :- isWeakStableR(XY,AB,XA,AX).
+% Returns true if X deems Y unAcceptable.
+unAcceptable(X,Y) :- \+ (rating(X,Y,_)).
 
-% Stability types for ties
-% ------------------------
+% Stability types
+% ---------------
 
 % We check for stability based on ratings, 
 % (X,Y) and (A,B) are couple
 % XY is the rating x gives to y,
 % AB is the rating a gives to b,...
+
+isStableR(XY,AB,XA,AX) :- isWeakStableR(XY,AB,XA,AX).
 
 isWeakStableR(XY,AB,XA,AX) :-
 	\+ (XA > XY,

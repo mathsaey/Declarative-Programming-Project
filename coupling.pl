@@ -6,30 +6,19 @@
 % Generating couples %
 %--------------------%
 
-stableMatching(X,StabilityCheck) :- stableMatchingLoop([],X, StabilityCheck).
+stableMatching(Marriages, StabilityCheck) :- 
+	% Get a list of all men and women
+	bagof(Men,man(Men),BM),
+	bagof(Wom,women(Wom),BW),
 
-% A matching is stable when:
-stableMatchingLoop(Marriages, Marriages, StabilityCheck) :- 
-	% You cannot find a man or women that is not married to add
-	(\+ (man(M), \+ married(M,_,Marriages));
-	 \+ (women(W), \+ married(W,_,Marriages))), 
-	%And every marriage is stable
-	checkMarriages(Marriages,StabilityCheck), !.
+	% Get every possible permutation
+	permutation(BW,PW),
 
-stableMatchingLoop(Marriages, Res, StabilityCheck) :- 
-	% Get an unmarried man and women.
-	man(M), \+ married(M,_,Marriages),
-	women(W), \+ married(W,_,Marriages),
+	% Merge one of these permutations with the men
+	mergeCouples(BM,PW,Marriages),
+	% See if this marriage is stable
+	checkMarriages(Marriages,StabilityCheck).
 
-	% Add their marriage
-	insertMarriage(M,W,Marriages,New),
-	% And continue looking
-	stableMatchingLoop(New,Res, StabilityCheck)
-	% Remove this cut to only show one result 
-	% This includes every possible matching in 
-	% any possible order
-	.
-	
 %---------------------%
 % Marriage Management %
 %---------------------%
@@ -47,3 +36,7 @@ removeMarriage(Male, Female, [X|Tail], [X|ResTail]) 	:- removeMarriage(Male, Fem
 married(X,Y, [(X,Y)|_])		:- !.
 married(X,Y, [(Y,X)|_])		:- !.
 married(X,Y, [_|Marriages]) :- married(X,Y, Marriages).
+
+% Merge a list of man and women
+mergeCouples([],[],[]).
+mergeCouples([MHead|MTail],[WHead|WTail], NewLs) :- mergeCouples(MTail,WTail,Ls), insertMarriage(MHead,WHead,Ls,NewLs).

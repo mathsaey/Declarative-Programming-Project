@@ -8,9 +8,9 @@
 :- include(coupling). % Contains the code that manages marriages and mathces couples
 :- include(stabilityChecks). % Contains the code that checks if marriages are stable
 
-%---------%
-% General %
-%---------%
+%--------%
+% "Main" %
+%--------%
 
 %Clause that calls the necessary parts of
 %the program.
@@ -30,21 +30,30 @@ matchCont :-
 matchCont :-
 	containsTies,
 
-	% Calculate different stability types
-	stableMatching(X,isSuperStableR),
-	stableMatching(Y,isStrongStableR),
-	stableMatching(Z,isWeakStableR),
-
 	% Print the types
-	write('Super stable: '), nl,
-	printMarriages(X,isSuperStableR), nl,
-	write('Strong stable: '), nl,
-	printMarriages(Y,isStrongStableR), nl,
-	write('Weak stable: '), nl,
-	printMarriages(Z,isWeakStableR), nl,
+	write('Super stable: '), nl, super(X), nl,
+	write('Strong stable: '), nl, strong(Y), nl,
+	write('Weak stable: '), nl, weak(Z), nl, nl,
+
 	write('Super stable list: '), write(X), nl,
 	write('Strong stable list: '), write(Y), nl,
-	write('Weak stable list: '), write(Z), nl.
+	write('Weak stable list: '), write(Z), nl,!.
+
+super(X) :-
+	(stableMatching(X,isSuperStableR); true),
+	printMarriages(X,isSuperStableR),
+	true.
+
+strong(X) :-
+	(stableMatching(X,isStrongStableR); true),
+	printMarriages(X,isStrongStableR),
+	true.
+
+weak(X) :-
+	(stableMatching(X,isWeakStableR); true),
+	printMarriages(X,isWeakStableR),
+	true.
+
 
 % Removes all the data from a parse
 % from the database
@@ -52,6 +61,10 @@ removeParseData :-
 	retractall(man(_)),
 	retractall(women(_)),
 	retractall(rating(_,_,_)).
+
+%---------%
+% General %
+%---------%
 
 % Checks if there are ties present
 containsTies :- rating(X,Y1,P),rating(X,Y2,P), Y1 \= Y2,!.
@@ -67,7 +80,6 @@ maxList([Head|Tail], Max) :-
 	maxList(Tail, M), 
 	(Head >= M, Max = Head;
 	 Head < M, Max = M),!.
-
 
 regretScore(Marriages,X) :- regretList(Marriages,R), maxList(R,X).
 
