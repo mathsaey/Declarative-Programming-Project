@@ -62,7 +62,6 @@ isWeakStableR(XY,AB,XA,AX) :-
 	\+ (XY > XA,
 		AB > AX).
 
-
 isStrongStableR(XY,AB,XA,AX) :-
 	\+ (XY > XA,
 		AB >= AX).

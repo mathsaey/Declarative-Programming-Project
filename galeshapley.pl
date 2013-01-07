@@ -70,7 +70,7 @@ marriagePhase(Marriages, ResMarriages, [(Y,Ls)|Tail]) :-
 
 	% If y is married we also include his/her partner
 	choosePartner([P|Ls],Y,X),
-	% Keep the marriages if Y stayed faithful
+	% Keep the marriages if Y stayed "faithful"
 	((X = P, ResMarriages = Marriages) ; 
 	% Otherwise delete the marriage and insert the new one
 	(removeMarriage(Y,P,NewMarriages,RMarriages),
